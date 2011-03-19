@@ -45,6 +45,27 @@ describe UsersController do
       get :new
       response.should have_selector("title", :content => "MmmUmami | Sign up")
     end
+    
+    it "should have a name field" do
+      get :new
+      response.should have_selector("input[name='user[name]'][type='text']")
+    end
+
+    it "should have an email field" do
+      get :new
+      response.should have_selector("input[name='user[email]'][type='text']")
+    end
+
+    it "should have a password field" do
+      get :new
+      response.should have_selector("input[name='user[password]'][type='password']")     
+    end
+
+    it "should have a password confirmation field" do
+      get :new
+      response.should have_selector("input[name='user[password_confirmation]'][type='password']")
+    end
+    
   end
 
   describe "POST 'create'" do
@@ -70,6 +91,17 @@ describe UsersController do
       it "should render the 'new' page" do
         post :create, :user => @attr
         response.should render_template('new')
+      end
+      
+      it "should reset password and password_confirmation fields" do
+        post :create, :user => @attr.merge( :name => "Horst Peter", 
+                                            :email => "horst@peter.com", 
+                                            :password => "password", 
+                                            :password_confirmation => "notpassword" )
+        response.should have_selector("input[name='user[name]'][value='Horst Peter']")
+        response.should have_selector("input[name='user[email]'][value='horst@peter.com']")
+        response.should_not have_selector("input[name='user[password]'][value]")
+        response.should_not have_selector("input[name='user[password_confirmation]'][value]") 
       end
     end   
     
