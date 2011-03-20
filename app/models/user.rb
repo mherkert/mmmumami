@@ -1,7 +1,5 @@
-require 'digest'
-
 # == Schema Information
-# Schema version: 20110319103502
+# Schema version: 20110320184710
 #
 # Table name: users
 #
@@ -12,7 +10,11 @@ require 'digest'
 #  updated_at         :datetime
 #  encrypted_password :string(255)
 #  salt               :string(255)
+#  admin              :boolean
 #
+
+require 'digest'
+
 class User < ActiveRecord::Base
   attr_accessor :password # virtual attribute
   attr_accessible :name, :email, :password, :password_confirmation
@@ -20,12 +22,12 @@ class User < ActiveRecord::Base
   email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 
   validates :name, :presence 	=> true,
-  				   :length 		=> { :maximum => 32 }
-  validates :email, :presence 		=> true,
-    				:format   		=> { :with => email_regex },
-    				:uniqueness 	=> { :case_sensitive => false }  				
+  				   :length => { :maximum => 32 }
+  validates :email, :presence 			=> true,
+    				:format   	=> { :with => email_regex },
+    				:uniqueness 	=> { :case_sensitive => false }  
   validates :password, :presence 		=> true,
-                       :confirmation 	=> true,
+                       :confirmation 		=> true,
                        :length			=> { :within => 6..40 }
                        
   before_save :encrypt_password
