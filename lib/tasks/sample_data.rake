@@ -1,8 +1,11 @@
-require 'faker'
+#this might fail db migration on heroku in some way
+#require 'faker'
 
 namespace :db do
   desc "Fill database with sample data"
   task :populate => :environment do
+    #PUT HERE!!
+    require 'faker'
     Rake::Task['db:reset'].invoke
     User.create!(:name => "Example User",
                  :email => "example@mmmumami.org",
