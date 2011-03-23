@@ -9,3 +9,9 @@ end
 Factory.sequence :email do |n|
   "person-#{n}@example.com"
 end
+
+Factory.define :cookbook do |cookbook|
+  cookbook.title "Foo bar"
+  cookbook.description "Foo description"
+  cookbook.association :user
+end

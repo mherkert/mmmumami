@@ -148,4 +148,28 @@ describe User do
       @user.should be_admin
     end
   end
+  
+  describe "cookbook associations" do
+
+    before(:each) do
+      @user = User.create(@attr)
+      @cb1 = Factory(:cookbook, :user => @user, :created_at => 1.day.ago)
+      @cb2 = Factory(:cookbook, :user => @user, :created_at => 1.hour.ago)
+    end
+
+    it "should have a cookbook attribute" do
+      @user.should respond_to(:cookbooks)
+    end
+    
+    it "should have the right cookbooks in the right order" do
+      @user.cookbooks.should == [@cb2, @cb1]
+    end
+    
+    it "should destroy associated cookbooks" do
+      @user.destroy
+      [@cb1, @cb2].each do |cookbook|
+        Cookbook.find_by_id(cookbook.id).should be_nil
+      end
+    end
+  end
 end
