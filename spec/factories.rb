@@ -15,3 +15,10 @@ Factory.define :cookbook do |cookbook|
   cookbook.description "Foo description"
   cookbook.association :user
 end
+
+Factory.define :recipe do |recipe|
+  recipe.title "Recipe title"
+  recipe.instructions "Recipe instructions"
+  recipe.association :user
+  recipe.association :cookbook
+end

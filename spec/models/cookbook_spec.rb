@@ -41,4 +41,17 @@ describe Cookbook do
       @user.cookbooks.build(:title => "a" * 33).should_not be_valid
     end
   end
+  
+  describe "recipe associations" do
+     
+    before(:each) do
+      @cookbook = Factory(:cookbook, :user => @user)
+      @r1 = Factory(:recipe, :user => @user, :cookbook => @cookbook, :created_at => 2.days.ago)
+      @r2 = Factory(:recipe, :user => @user, :cookbook => @cookbook, :created_at => 1.week.ago)
+    end
+    
+    it "should have a recipes attribute" do
+      @cookbook.should respond_to(:recipes)
+    end
+  end
 end

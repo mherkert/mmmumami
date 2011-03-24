@@ -3,6 +3,8 @@ class Cookbook < ActiveRecord::Base
   
   belongs_to :user
   
+  has_many :recipes, :dependent => :destroy
+    
   validates :title, :presence => true, :length => { :maximum => 32 }
   validates :user_id, :presence => true
 
